@@ -1,0 +1,28 @@
+design notes
+
+Use cases
+A user can log in and view his list
+A user must be able to add a new task
+A user should be able to mark a task as complete
+A user should be able to delete tasks
+A user should be able to update tasks (change title, etc.)
+
+
+database schema
+
+User
+-id (int)
+-email (varchar, 64)
+-password(varchar, 64) # should we worry about how we are storing passwords? Maybe later.
+-name(varchar, 64)
+
+Task
+-id(int)
+-title(varchar,128)
+-context(varchar, 64)
+-notes(varchar 256)
+-created_at(date?? look up how to do this)
+-completed_at(date)
+
+user has many task - one to many
+task has one owner - one to one
