@@ -1,7 +1,7 @@
 """
 model.py
 """
-import datetime
+from datetime import *
 import sqlite3
 
 def connect_db():
@@ -43,10 +43,10 @@ def new_task(db, title, user_id):
     """Given a title and a user_id, create a new task belonging to that user. 
     Return the id of the created task"""
     c =db.cursor()
-    created_at = "now"
-    completed_at = 0
-    query = """INSERT INTO Tasks VALUES (NULL, ?, ?, ?, ?)"""
-    result = c.execute(query, (title, user_id, created_at, completed_at))
+    created_at = datetime.today()
+    completed_at = ""
+    query = """INSERT INTO Tasks VALUES (NULL, ?, ?, NULL, ?)"""
+    result = c.execute(query, (title, created_at, user_id))
     db.commit()
     print "Added new task : %s" % title
     print "New task ID: ", result.lastrowid
@@ -55,25 +55,42 @@ def new_task(db, title, user_id):
 def complete_task(db, task_id):
     """Mark the task with the given task_id as being complete."""
     c = db.cursor()
-    completed_at = "00/00/00"
-    query = """UPDATE Tasks SET completed_at = ? WHERE id =?"""
+    completed_at = datetime.today()
+    query = """UPDATE Tasks SET completed_at=? WHERE id =?"""
     c.execute(query, (completed_at, task_id))
+    db.commit()
     print "Task %r marked as complete." % task_id
 
+# If get_tasks is called with one parameter, user_id defaults to None
 def get_tasks(db, user_id=None):
-    """Get all the tasks matching the user_id, getting all the tasks in the system if the user_id is not provided. Returns the results as a list of dictionaries."""
-    pass
+    """Get all the tasks matching the user_id,
+     getting all the tasks in the system if the user_id is not provided. 
+     Returns the results as a list of dictionaries."""
+    c = db.cursor()
+    if user_id == None:
+        query = """SELECT * FROM Tasks"""
+        c.execute(query)
+        result = c.fetchall()
+        list = []
+        for row in result:
+            fields = ["task_id", "title", "created_at", "completed_at", "user_id"]
+            item = dict(zip(fields, row))
+            list.append(item)
+        return list
 
 def get_task(db, task_id):
     """Gets a single task, given its id. Returns a dictionary of the task data."""
 
 def main():
     db = connect_db()
-    pony_id = 51
-    #task_id = 21
-    pony_task = new_task(db, "Play with animals", pony_id )
-    get_id = get_user(db, pony_id)
+    pony_id = 1
+    task_id = 2
+    # pony_id = new_user(db, "apple@mlp.com", "apple", "Apple Jack")
+    # pony_task = new_task(db, "Apple bucking", pony_id)
+    #get_id = get_user(db, pony_id)
     #complete_task(db, task_id)
+    list = get_tasks(db)
+    print list
 
 main()
 
