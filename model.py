@@ -71,26 +71,30 @@ def get_tasks(db, user_id=None):
         query = """SELECT * FROM Tasks"""
         c.execute(query)
         result = c.fetchall()
-        list = []
-        for row in result:
-            fields = ["task_id", "title", "created_at", "completed_at", "user_id"]
-            item = dict(zip(fields, row))
-            list.append(item)
-        return list
+    else:
+        query = """SELECT * FROM Tasks WHERE user_id =?"""
+        # execute method needs tuple parameters, so user_id needs a comma after it
+        c.execute(query, (user_id,))
+        result = c.fetchall()
+
+    list = []
+    for row in result:
+        fields = ["task_id", "title", "created_at", "completed_at", "user_id"]
+        item = dict(zip(fields, row))
+        list.append(item)
+    return list
 
 def get_task(db, task_id):
     """Gets a single task, given its id. Returns a dictionary of the task data."""
 
 def main():
     db = connect_db()
-    pony_id = 1
-    task_id = 2
-    # pony_id = new_user(db, "apple@mlp.com", "apple", "Apple Jack")
-    # pony_task = new_task(db, "Apple bucking", pony_id)
+   
+    #pony_id = new_user(db, "rainbow@mlp.com", "Sonic Rainboom!", "Rainbow Dash")
+    #pony_task = new_task(db, "Make a sonic rainboom", pony_id)
     #get_id = get_user(db, pony_id)
     #complete_task(db, task_id)
-    list = get_tasks(db)
-    print list
+    #list = get_tasks(db, pony_id)
 
 main()
 
