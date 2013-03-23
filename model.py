@@ -76,12 +76,12 @@ def get_tasks(db, user_id=None):
         c.execute(query, (user_id,))
  
     result = c.fetchall()
-    list = []
+    dict_list = []
     for row in result:
         fields = ["task_id", "title", "created_at", "completed_at", "user_id"]
         item = dict(zip(fields, row))
-        list.append(item)
-    return list
+        dict_list.append(item)
+    return dict_list
 
 def get_task(db, task_id):
     """Gets a single task, given its id. Returns a dictionary of the task data."""
