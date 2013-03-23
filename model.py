@@ -33,10 +33,9 @@ def get_user(db, user_id):
     query = """ SELECT name, id FROM Users WHERE id=?  """
     c.execute(query,(user_id,))
     result = c.fetchone()
-    if result:
-        fields = ["name", "user_id"]
-        print "User name: %s" % fields[0]
-        return dict(zip(fields, result))
+    fields = ["name", "user_id"]
+    print "User name: %s" % fields[0]
+    return dict(zip(fields, result))
 
 
 def new_task(db, title, user_id):
@@ -70,13 +69,13 @@ def get_tasks(db, user_id=None):
     if user_id == None:
         query = """SELECT * FROM Tasks"""
         c.execute(query)
-        result = c.fetchall()
+
     else:
         query = """SELECT * FROM Tasks WHERE user_id =?"""
         # execute method needs tuple parameters, so user_id needs a comma after it
         c.execute(query, (user_id,))
-        result = c.fetchall()
-
+ 
+    result = c.fetchall()
     list = []
     for row in result:
         fields = ["task_id", "title", "created_at", "completed_at", "user_id"]
@@ -86,15 +85,22 @@ def get_tasks(db, user_id=None):
 
 def get_task(db, task_id):
     """Gets a single task, given its id. Returns a dictionary of the task data."""
+    c = db.cursor()
+    query = """SELECT * FROM Tasks where id =?"""
+    c.execute(query, (task_id,))
+    result = c.fetchone()
+    fields = ["title", "created_at", "completed_at", "user_id"]
+    return dict(zip(fields, result))
 
 def main():
     db = connect_db()
-   
+
+    # Testing code!!!
     #pony_id = new_user(db, "rainbow@mlp.com", "Sonic Rainboom!", "Rainbow Dash")
     #pony_task = new_task(db, "Make a sonic rainboom", pony_id)
     #get_id = get_user(db, pony_id)
     #complete_task(db, task_id)
-    #list = get_tasks(db, pony_id)
+    #list = get_task(db, task_id)
 
 main()
 
