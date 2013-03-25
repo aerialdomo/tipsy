@@ -4,5 +4,5 @@ seed.py
 import model
 
 db = model.connect_db()
-user_id = model.new_user(db, "chriszf@gmail.com", "securepassword", "Christian")
-task = model.new_task(db, "Complete this task list", user_id)
+user_id = model.new_user(db, "pinky@mlp.com", "party", "Pinky Pie")
+task = model.new_task(db, "throw a party", user_id)

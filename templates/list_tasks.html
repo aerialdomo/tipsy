@@ -1,6 +1,15 @@
 <html>
-    <head><title>Tipsy</title></head>
+    <head><link rel="stylesheet" href="/static/css/bootstrap.css" type="text/css">
+    	<title>Tipsy</title></head>
     <body>
         <h1>Task List</h1>
+
+
+     
+        <ul id = "tasks">
+       	{% for task in tasks %}
+        <li> Title: {{task.title}}| Created at: {{task.created_at}}</li>
+      	{% endfor %}
+        </ul>	
     </body>
 </html>
