@@ -24,8 +24,18 @@ def new_task():
 def save_task():
 	task_title = request.form['task_title']
 	db = model.connect_db()
+	#user 1
 	task_id = model.new_task(db, task_title, 1)
 	return redirect("/tasks")
+
+@app.route("/mark_complete", methods = ["POST"])
+def mark_complete():
+	task_id= request.form['click_complete']
+	print "TASK ID!!!", task_id
+	db = model.connect_db()
+	model.complete_task(db, task_id)
+	return redirect("/tasks")
+
 
 if __name__ == "__main__":
 	app.run(debug=True)

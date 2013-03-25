@@ -3,12 +3,17 @@
     	<title>Tipsy</title></head>
     <body>
         <h1>Task List</h1>
-
-
-     
-        <ul id = "tasks">
+        <ul id = "tasks" align="left">
+        <!--loop throw row in table Tasks!-->    
        	{% for task in tasks %}
-        <li> Title: {{task.title}}| Created at: {{task.created_at}}</li>
+        <!--Task ID is actually task_id!-->
+        <li> User ID: {{task.user_id}}  Task ID: {{task.task_id}} Title: {{task.title}} Completed at: {{task.completed_at}} </li> 
+        <!-- Button Code for task completion. Name of this form is click_complete!-->
+        <form method="POST", action="/mark_complete">    
+        <button class="btn btn-mini btn-success" name="click_complete" value = {{task.task_id}}
+        type="submit">DONE!</button>
+        </form>
+        
       	{% endfor %}
         </ul>	
     </body>
