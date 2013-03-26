@@ -36,6 +36,20 @@ def mark_complete():
 	model.complete_task(db, task_id)
 	return redirect("/tasks")
 
+@app.route("/edit_task")
+def edit_task():
+	return render_template("edit_task.html")
+
+# @app.route("/log_in")
+# def log_in():
+# 	email = request.form['input_email']
+# 	password = request.form['input_password']
+# 	db = model.connect_db()
+# 	model.authenticate(db, email, password)
+# 	return render_template("log_in.html",)
+
+
+
 
 if __name__ == "__main__":
 	app.run(debug=True)

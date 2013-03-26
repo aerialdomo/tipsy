@@ -60,6 +60,14 @@ def complete_task(db, task_id):
     db.commit()
     print "Task %r marked as complete." % task_id
 
+def edit_title(db, task_id, new_title):
+    """Edit a task title""" 
+    c = db.cursor()
+    query = """UPDATE Tasks SET title = ? WHERE id=?"""
+    c.execute(query, (new_title, task_id))
+    db.commit()
+    print "Task %r titled changed." % task_id
+
 # If get_tasks is called with one parameter, user_id defaults to None
 def get_tasks(db, user_id=None):
     """Get all the tasks matching the user_id,
@@ -94,6 +102,7 @@ def get_task(db, task_id):
 
 def main():
     db = connect_db()
+    #edit_title(db, 1, "Singing")
 
     # Testing code!!!
     #pony_id = new_user(db, "rainbow@mlp.com", "Sonic Rainboom!", "Rainbow Dash")

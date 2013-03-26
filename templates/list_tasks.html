@@ -1,20 +1,47 @@
 <html>
     <head><link rel="stylesheet" href="/static/css/bootstrap.css" type="text/css">
-    	<title>Tipsy</title></head>
+    	
+        <title>Tipsy</title>
+        
+    </head>
+
     <body>
-        <h1>Task List</h1>
-        <ul id = "tasks" align="left">
+        <!--code for black bar at top of page!-->
+        <div class="navbar navbar-inverse">
+             <div class="navbar-inner">
+                <div class="container">
+                 <h1 style="color:white">Task List</h1>
+                </div> 
+             </div>   
+        </div>
+        <table class="table table-striped" id = "tasks" align="left">
+        <!--separate out column headers!-->    
+        <th> User ID: </th>
+        <th> Task ID: </th>
+        <th> Title:  </th>
+        <th> Completed at: </th>
+        <th> Mark Complete: </th>
+        <th> Edit: </th>
         <!--loop throw row in table Tasks!-->    
        	{% for task in tasks %}
         <!--Task ID is actually task_id!-->
-        <li> User ID: {{task.user_id}}  Task ID: {{task.task_id}} Title: {{task.title}} Completed at: {{task.completed_at}} </li> 
+        <tr>
+        <td>{{task.user_id}}</td>  
+        <td>{{task.task_id}}</td>
+        <td>{{task.title}} </td>
+        <td>{{task.completed_at}}  </td>
         <!-- Button Code for task completion. Name of this form is click_complete!-->
-        <form method="POST", action="/mark_complete">    
+        <td><form method="POST", action="/mark_complete">    
         <button class="btn btn-mini btn-success" name="click_complete" value = {{task.task_id}}
-        type="submit">DONE!</button>
-        </form>
+        type="submit">DONE!</button></td>
+        <td><form method="POST", action="/edit">    
+        <button class="btn btn-mini btn-warning" name="click_edit" value = {{task.task_id}}
+        type="submit">Edit</button>
+        </form></td>
+    </tr>
         
       	{% endfor %}
         </ul>	
+        </table>
     </body>
 </html>
