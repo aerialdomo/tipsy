@@ -1,16 +1,14 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Tipsy Task List</title>
-        <link rel="stylesheet" href="/static/css/bootstrap.css" type="text/css">
-    </head>
-    <body>
-        <div class="container">
+{% extends "layout.html" %}
+{% block body%}
+       
             <h1>Task List</h1>
             <div class="tasklist">
                 <ul>
                 {% for task in tasks %}
-                <li><a href="/task/{{task['id']}}">Task {{ task['id'] }}</a>: {{ task['title'] }}{% if task['completed_at'] %} &mdash; Completed{% endif %}</li>
+                <li><a href="{{ url_for("view_task", id=task['id']) }}">Task {{ task['id'] }}</a>: {{ task['title'] }}
+                    {% if task['completed_at'] %} &mdash; Completed
+                    {% endif %}
+                </li>
                 {% endfor %}
                 </ul>
             </div>
@@ -20,6 +18,5 @@
                 <input type="text" name="title" id="title"></input>
                 <input type="submit"></input>
             </form>
-        </div>
-    </body>
-</html>
+        
+{% endblock %}

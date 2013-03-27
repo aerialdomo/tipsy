@@ -3,8 +3,51 @@ model.py
 """
 import sqlite3
 
+class User(object):
+    COLS = ["id", "email", "password", "username"]
+    TABLE_NAME = "Users"
+
+    def__init__(self, id, email, password, name):
+        self.id = id
+        self.email = email
+        self.password = password
+        self.name = name
+
+    @classmethod
+    def new(cls, db, email, password, name):
+        vals = [email, password, name]
+        return insert_into_db(db, cls.TABLE_NAME, cls.COLS, vals)
+
+    @classmethod
+    def authenticate(cls, db, email, password):
+        c = db.cursor()
+        query = """Select * FROM %s WHERE email=? AND password=?"""%
+        (cls.TABLE_NAME)
+        c.execute(query, (email, password))
+        result = c.fetchone()
+        if result:
+            return cls(*result)
+        return None
+
 def connect_db():
     return sqlite3.connect("tipsy.db")
+
+# def make_dict_fn(row):
+#     row_dict = {}
+#     functions = ["get_user", "get_task"] 
+#     # for items in row:
+#     return dict(zip(row, functions)
+
+def get_from_table_by_id(db, table_name, id):
+    c = db.cursor()  
+    query_template = """SELECT * from %s WHERE id = ? """
+    query = query_template%table_name
+    c.execute(query, (id,))
+    row=c.fetchone()
+    if row:
+        return dict(zip(table_name, row)) # dictionary     
+    return None        
+
 
 def new_user(db, email, password, name):          
     c = db.cursor()                                     
@@ -30,15 +73,7 @@ def authenticate(db, email, password):
     return None
 
 def get_user(db, user_id):
-    """Gets a user dictionary out of the database given an id"""
-    c = db.cursor()
-    query = """SELECT * from Users WHERE id = ?"""
-    c.execute(query, (user_id,))
-    user_row = c.fetchone()
-    if user_row:
-        return make_user(user_row)
-
-    return None
+    return get_from_table_by_id(db, "Users", user_id, make_user)
 
 def new_task(db, title, user_id = None):
     """Given a title and a user_id, create a new task belonging to that user. Return the id of the created task"""
@@ -77,17 +112,11 @@ def get_tasks(db, user_id=None):
 
     return tasks
 
-def get_task(db, task_id):
+def get_task(db, task_id, make_task):
     """Gets a single task, given its id. Returns a dictionary of the task data."""
-    c = db.cursor()
-    query = """SELECT * from Tasks WHERE id = ?"""
-    c.execute(query, (task_id,))
-    task_row = c.fetchone()
-    if task_row:
-        return make_task(task_row)
-
-    return None
+    return get_from_table_by_id(db, "Tasks", task_id)
 
 def make_task(row):
     columns = ["id", "title", "created_at", "completed_at", "user_id"]
     return dict(zip(columns, row))
+
